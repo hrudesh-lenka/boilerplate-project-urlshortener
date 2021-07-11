@@ -1,9 +1,14 @@
 require('dotenv').config();
 const express = require('express');
+//var bodyParser = require("body-parser");
+const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
+const dns = require('dns');
 
-// Basic Configuration
+app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: false }));
+
 const port = process.env.PORT || 3000;
 
 app.use(cors());
@@ -15,8 +20,15 @@ app.get('/', function(req, res) {
 });
 
 // Your first API endpoint
-app.get('/api/hello', function(req, res) {
-  res.json({ greeting: 'hello API' });
+app.post('/api/shorturl/new', (req, res)=> {
+  const {url} = req.body;
+  dns.lookup(url, (err,addresses,family)=>{
+    if(err){
+      return res.json({
+          error: "invalid URL"
+        })
+    }
+  })
 });
 
 app.listen(port, function() {
