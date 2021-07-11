@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-//var bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
@@ -22,6 +22,8 @@ app.get('/', function(req, res) {
 // Your first API endpoint
 app.post('/api/shorturl/new', (req, res)=> {
   const {url} = req.body;
+  console.log(url);
+  console.log(req.body);
   dns.lookup(url, (err,addresses,family)=>{
     if(err){
       return res.json({
